@@ -6,4 +6,6 @@ Steps to reproduce the bug
 ./gradlew test
 ```
 
-Actual result - `HttpTest` fail: https://github.com/Sammers21/vertx-fs-reproducer/runs/425798841#step:5:31
+Actual result - `HttpTest` fail: https://github.com/Sammers21/vertx-rxhttp-repoducer/runs/441503007?check_suite_focus=true#step:5:30
+
+
