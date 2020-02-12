@@ -1,6 +1,8 @@
 package io.vertx.starter;
 
+import io.reactivex.Flowable;
 import io.vertx.reactivex.core.Vertx;
+import io.vertx.reactivex.core.buffer.Buffer;
 import io.vertx.reactivex.ext.web.client.WebClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,9 @@ public class HttpTest {
     final int port = rndPort();
     final String str = "123";
     vertx.createHttpServer().requestHandler(request -> {
-      request.response().end(str);
+      Flowable.fromArray(
+        Buffer.buffer(str.getBytes())
+      ).subscribe(request.response().toSubscriber());
     }).rxListen(port)
       .blockingGet();
     final String resp = WebClient.create(vertx).get(port, "127.0.0.1", "/hello")
@@ -29,7 +33,6 @@ public class HttpTest {
 
   /**
    * Find a random port.
-   *
    * @return The free port.
    * @throws IOException If fails.
    */
