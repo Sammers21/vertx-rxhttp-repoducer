@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
   java
   id("com.github.johnrengelman.shadow") version "4.0.3"
@@ -7,9 +5,12 @@ plugins {
 
 repositories {
   mavenCentral()
+  maven {
+    url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+  }
 }
 
-val vertxVersion = "3.8.5"
+val vertxVersion = "4.0.0-SNAPSHOT"
 val junitVersion = "5.3.2"
 
 dependencies {
