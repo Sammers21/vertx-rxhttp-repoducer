@@ -13,9 +13,9 @@ val vertxVersion = "3.8.5"
 val junitVersion = "5.3.2"
 
 dependencies {
-  implementation("io.vertx:vertx-core:$vertxVersion")
-  implementation("io.vertx:vertx-rx-java2:$vertxVersion")
-  implementation("org.apache.commons:commons-lang3:3.9")
+  testImplementation("io.vertx:vertx-core:$vertxVersion")
+  testImplementation("io.vertx:vertx-rx-java2:$vertxVersion")
+  testImplementation("org.apache.commons:commons-lang3:3.9")
   testImplementation("io.vertx:vertx-junit5:$vertxVersion")
   testImplementation("io.vertx:vertx-web-client:$vertxVersion")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

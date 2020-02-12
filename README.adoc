@@ -1,9 +1,9 @@
-= Vert.x Rxified AsyncFile bug reproducer  
+= Vert.x Rxified Http Server bug reproducer
 
 Steps to reproduce the bug
 
 ```bash
-./gradlew test 
+./gradlew test
 ```
 
-Actual result - `FsTest` fail: https://github.com/Sammers21/vertx-fs-reproducer/runs/425798841#step:5:31
+Actual result - `HttpTest` fail: https://github.com/Sammers21/vertx-fs-reproducer/runs/425798841#step:5:31
