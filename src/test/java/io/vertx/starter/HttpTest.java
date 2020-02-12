@@ -1,37 +1,41 @@
 package io.vertx.starter;
 
-import io.vertx.junit5.VertxExtension;
-import io.vertx.junit5.VertxTestContext;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.client.WebClient;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.net.ServerSocket;
 
-@ExtendWith(VertxExtension.class)
 public class HttpTest {
 
   @Test
-  public void flowSaveWorks(VertxTestContext testContext) throws InterruptedException {
+  public void httpRequestFlow() throws IOException {
     Vertx vertx = Vertx.vertx();
-    final CountDownLatch async = new CountDownLatch(2);
-    final int port = vertx.createHttpServer().requestHandler(request -> {
-      async.countDown();
-      request.toFlowable().doOnTerminate(() -> {
-        // this countDown is not called
-        async.countDown();
-      });
-      vertx.setTimer(1000, event -> {
-        request.response().end("OK");
-      });
-    }).listen().actualPort();
-    WebClient.create(vertx).get(port, "localhost", "/hello").rxSend().blockingGet();
-    async.await(10_000, TimeUnit.MILLISECONDS);
-    if (async.getCount() == 1) {
-      testContext.failNow(new IllegalStateException("Request flow has no end"));
-    }
+    final int port = rndPort();
+    final String str = "123";
+    vertx.createHttpServer().requestHandler(request -> {
+      request.response().end(str);
+    }).rxListen(port)
+      .blockingGet();
+    final String resp = WebClient.create(vertx).get(port, "127.0.0.1", "/hello")
+      .rxSend()
+      .blockingGet()
+      .bodyAsString();
+    Assertions.assertEquals(str, resp);
     vertx.close();
+  }
+
+  /**
+   * Find a random port.
+   *
+   * @return The free port.
+   * @throws IOException If fails.
+   */
+  private int rndPort() throws IOException {
+    try (ServerSocket socket = new ServerSocket(0)) {
+      return socket.getLocalPort();
+    }
   }
 }
